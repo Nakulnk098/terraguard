@@ -55,3 +55,4 @@ resource "aws_security_group" "demo_sg" {
     Project = "TerraGuard"
   }
 }
+# TODO(TerraGuard): RISKY drift on aws_security_group.demo_sg -- ingress changed -- see PR for details
