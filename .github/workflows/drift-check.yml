@@ -1,0 +1,57 @@
+name: TerraGuard Drift Check
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # Runs every 6 hours
+  workflow_dispatch: # Allows you to run it manually from GitHub too
+
+jobs:
+  check-drift:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Get the code
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Step 2: Install Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.15.8
+          terraform_wrapper: false
+
+      # Step 3: Setup AWS credentials
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      # Step 4: Install Python
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # Step 5: Install Python dependencies
+      - name: Install dependencies
+        run: pip install PyGithub python-dotenv requests
+
+      # Step 6: Run Terraform plan to detect drift
+      - name: Terraform init and plan
+        working-directory: ./infra
+        run: |
+          terraform init
+          terraform plan -out=tfplan
+          terraform show -json tfplan > plan.json
+
+      # Step 7: Run TerraGuard
+      - name: Run TerraGuard scanner
+        working-directory: ./classifier
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
+          GITHUB_REPO: ${{ secrets.GITHUB_REPO }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        run: python main.py
