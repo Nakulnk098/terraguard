@@ -1,6 +1,31 @@
 import json
 import sys
 
+# Fields that commonly differ due to state format, not real drift
+IGNORE_FIELDS = {
+    "force_destroy",
+    "bucket",
+    "name",
+    "name_prefix",
+    "revoke_rules_on_delete",
+    "egress",
+    "tags_all",
+    "arn",
+    "id",
+    "owner_id",
+    "vpc_id",
+    "bucket_domain_name",
+    "bucket_regional_domain_name",
+    "hosted_zone_id",
+    "region",
+    "request_payer",
+    "acceleration_status",
+    "bucket_prefix",
+    "policy",
+    "acl",
+    "object_lock_enabled",
+}
+
 # --- Load the plan.json file ---
 def load_plan(path):
     with open(path, "r", encoding="utf-8-sig") as f:
@@ -34,13 +59,15 @@ def get_changed_fields(resource):
     all_keys = set(before.keys()) | set(after.keys())
 
     for key in all_keys:
+        if key in IGNORE_FIELDS:
+            continue
         if before.get(key) != after.get(key):
             changed_fields[key] = {
                 "before": before.get(key),
                 "after": after.get(key)
             }
 
-    return changed_fields
+    return changed_fieldsgit add .
 
 # --- Classification rules ---
 # --- Classification rules ---
