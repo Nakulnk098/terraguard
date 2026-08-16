@@ -52,6 +52,6 @@ jobs:
         working-directory: ./classifier
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
-          GITHUB_REPO: ${{ secrets.GITHUB_REPO }}
+          GITHUB_REPO: ${{ secrets.MY_REPO }}
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         run: python main.py

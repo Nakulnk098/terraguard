@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv(dotenv_path="../.env")
 
-SLACK_WEBHOOK = os.getenv("SLACK_WEBHOOK")
+SLACK_WEBHOOK = os.getenv("TG_SLACK_WEBHOOK") or os.getenv("SLACK_WEBHOOK")
 
 
 def send_risky_alert(resource_address, field_name, before_value, after_value):

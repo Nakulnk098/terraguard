@@ -6,9 +6,8 @@ from github import Github, Auth
 
 load_dotenv(dotenv_path="../.env")
 
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
-GITHUB_REPO = os.getenv("GITHUB_REPO")
-
+GITHUB_TOKEN = os.getenv("TG_GITHUB_TOKEN") or os.getenv("GITHUB_TOKEN")
+GITHUB_REPO = os.getenv("TG_GITHUB_REPO") or os.getenv("GITHUB_REPO")
 
 def get_repo():
     auth = Auth.Token(GITHUB_TOKEN)
