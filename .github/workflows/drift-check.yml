@@ -44,7 +44,6 @@ jobs:
         working-directory: ./infra
         run: |
           terraform init
-          terraform apply -auto-approve
           terraform plan -out=tfplan
           terraform show -json tfplan > plan.json
 
