@@ -24,6 +24,8 @@ IGNORE_FIELDS = {
     "policy",
     "acl",
     "object_lock_enabled",
+    "versioning_configuration",
+    "description",
 }
 
 # --- Load the plan.json file ---
