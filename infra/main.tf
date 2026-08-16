@@ -55,3 +55,4 @@ resource "aws_security_group" "demo_sg" {
     Project = "TerraGuard"
   }
 }
+# TODO(TerraGuard): RISKY drift on aws_security_group.demo_sg -- revoke_rules_on_delete changed -- see PR for details
