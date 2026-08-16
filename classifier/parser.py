@@ -67,7 +67,7 @@ def get_changed_fields(resource):
                 "after": after.get(key)
             }
 
-    return changed_fieldsgit add .
+    return changed_fields
 
 # --- Classification rules ---
 # --- Classification rules ---
