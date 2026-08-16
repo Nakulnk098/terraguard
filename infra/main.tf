@@ -55,3 +55,4 @@ resource "aws_security_group" "demo_sg" {
     Project = "TerraGuard"
   }
 }
+# TODO(TerraGuard): sync 'description' on aws_security_group.demo_sg -- see PR
