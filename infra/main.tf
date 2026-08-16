@@ -11,15 +11,13 @@ provider "aws" {
   region = "ap-south-1"
 }
 
-# Resource 1: S3 bucket
 resource "aws_s3_bucket" "demo_bucket" {
   bucket = "terraguard-demo-bucket-nakul-2026"
 
   tags = {
-  Environment = "demo"
-  Project = "TerraGuard"
-  owner = "nakul-manual-test"
-}
+    Project     = "TerraGuard"
+    Environment = "demo"
+  }
 }
 
 resource "aws_s3_bucket_versioning" "demo_bucket_versioning" {
@@ -29,12 +27,9 @@ resource "aws_s3_bucket_versioning" "demo_bucket_versioning" {
   }
 }
 
-# Resource 2: Security group
 resource "aws_security_group" "demo_sg" {
   name        = "terraguard-demo-sg"
   description = "Demo security group for TerraGuard drift testing"
-
-#ingress block — defines inbound traffic rules (what's allowed to reach this resource):
 
   ingress {
     description = "HTTPS from anywhere"
