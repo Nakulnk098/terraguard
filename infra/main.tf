@@ -55,3 +55,4 @@ resource "aws_security_group" "demo_sg" {
     Project = "TerraGuard"
   }
 }
+# TODO(TerraGuard): sync 'tags_all' on aws_s3_bucket.demo_bucket -- see PR
