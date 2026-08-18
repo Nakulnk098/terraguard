@@ -15,9 +15,10 @@ resource "aws_s3_bucket" "demo_bucket" {
   bucket = "terraguard-demo-bucket-nakul-2026"
 
   tags = {
-    Project     = "TerraGuard"
-    Environment = "demo"
-  }
+  Environment = "demo"
+  Project = "TerraGuard"
+  Team = "platform-engineering"
+}
 }
 
 resource "aws_s3_bucket_versioning" "demo_bucket_versioning" {
