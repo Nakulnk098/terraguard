@@ -15,6 +15,7 @@ resource "aws_s3_bucket" "demo_bucket" {
   bucket = "terraguard-demo-bucket-nakul-2026"
 
   tags = {
+  CostCenter = "ops-123"
   Environment = "demo"
   Project = "TerraGuard"
   Team = "platform-engineering"
