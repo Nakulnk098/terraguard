@@ -54,4 +54,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT_TOKEN }}
           GITHUB_REPO: ${{ secrets.MY_REPO }}
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
         run: python main.py

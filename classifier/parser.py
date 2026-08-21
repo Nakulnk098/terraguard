@@ -1,6 +1,7 @@
 import json
+import os
 import sys
-
+from llm_classifier import llm_classify
 # Fields that commonly differ due to state format, not real drift
 IGNORE_FIELDS = {
     "force_destroy",
@@ -25,7 +26,6 @@ IGNORE_FIELDS = {
     "acl",
     "object_lock_enabled",
     "versioning_configuration",
-    "description",
 }
 
 # --- Load the plan.json file ---
@@ -75,48 +75,42 @@ def get_changed_fields(resource):
 # --- Classification rules ---
 def classify_change(resource_type, field_name, before_value, after_value):
 
-    # --- Rule: Tags / descriptions (any resource type) ---
     if field_name in ("tags", "tags_all", "description"):
-        return "SAFE"
-
-    # --- Rule: EC2 instance type change ---
+        return "SAFE", "Tags and descriptions are cosmetic changes", ""
+        # TEMPORARY TEST: skip ingress rule to test LLM fallback
+    
     if resource_type == "aws_instance" and field_name == "instance_type":
-        return "SAFE"
+        return "SAFE", "Instance type is a performance setting, not security", ""
 
-    # --- Rule: Security group ingress rules ---
     if resource_type == "aws_security_group" and field_name == "ingress":
         before_rules = before_value or []
         after_rules = after_value or []
 
-        risky_ports = [22, 3389, 3306, 5432]  # SSH, RDP, MySQL, Postgres
+        risky_ports = [22, 3389, 3306, 5432]
 
-        # Check if any CURRENT (before) rule is dangerously open
         for rule in before_rules:
             cidr_blocks = rule.get("cidr_blocks", [])
             from_port = rule.get("from_port")
             if "0.0.0.0/0" in cidr_blocks and from_port in risky_ports:
-                return "RISKY"
+                return "RISKY", f"Port {from_port} is open to the entire internet", ""
 
-        return "SAFE"  # open, but not on a sensitive port, or access was tightened
+        return "SAFE", "Network change but not on a sensitive port", ""
 
-    # --- Rule: IAM — always risky, no exceptions ---
     if resource_type.startswith("aws_iam_"):
-        return "RISKY"
+        return "RISKY", "IAM changes always require human review", ""
 
-    # --- Rule: S3 encryption ---
     if resource_type == "aws_s3_bucket_server_side_encryption_configuration":
-        return "RISKY"
+        return "RISKY", "Encryption settings affect data protection", ""
 
-    # --- Rule: S3 public access block settings ---
     if resource_type == "aws_s3_bucket_public_access_block":
-        return "RISKY"
+        return "RISKY", "Public access changes can expose private data", ""
 
-    # --- Rule: S3 versioning toggle ---
     if resource_type == "aws_s3_bucket_versioning" and field_name == "versioning_configuration":
-        return "SAFE"
+        return "SAFE", "Versioning is a data retention setting", ""
 
-    # --- Default: anything unclassified is RISKY (safe default) ---
-    return "RISKY"
+    # --- Default: ask LLM for ambiguous cases ---
+    classification, reason, suggestion = llm_classify(resource_type, field_name, before_value, after_value)
+    return "RISKY", reason, suggestion
 
 if __name__ == "__main__":
     plan = load_plan("../infra/plan.json")

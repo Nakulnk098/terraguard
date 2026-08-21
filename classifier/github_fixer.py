@@ -61,8 +61,82 @@ def fix_tags_in_tf(content, resource_type, resource_name, new_tags):
 
     return updated_content
 
+def fix_description_in_tf(content, resource_type, resource_name, new_description):
+    resource_pattern = rf'resource\s+"{re.escape(resource_type)}"\s+"{re.escape(resource_name)}"\s*\{{'
+    resource_match = re.search(resource_pattern, content)
 
-def create_fix_pr(resource_address, field_name, before_value, after_value, classification="SAFE"):
+    if not resource_match:
+        print(f"  WARNING: Could not find resource block for {resource_type}.{resource_name}")
+        return None
+
+    search_start = resource_match.start()
+
+    next_resource = re.search(r'\nresource\s+"', content[resource_match.end():])
+    if next_resource:
+        search_end = resource_match.end() + next_resource.start()
+    else:
+        search_end = len(content)
+
+    resource_section = content[search_start:search_end]
+
+    desc_pattern = r'description\s*=\s*"[^"]*"'
+    desc_match = re.search(desc_pattern, resource_section)
+
+    if not desc_match:
+        print(f"  WARNING: Could not find description in {resource_type}.{resource_name}")
+        return None
+
+    indent_match = re.match(r'^(\s*)', resource_section[desc_match.start():].split('\n')[0])
+    indent = indent_match.group(1) if indent_match else "  "
+
+    new_desc_line = f'{indent}description = "{new_description}"'
+
+    abs_start = search_start + desc_match.start()
+    abs_end = search_start + desc_match.end()
+
+    updated_content = content[:abs_start] + new_desc_line + content[abs_end:]
+    return updated_content
+
+
+def fix_instance_type_in_tf(content, resource_type, resource_name, new_instance_type):
+    resource_pattern = rf'resource\s+"{re.escape(resource_type)}"\s+"{re.escape(resource_name)}"\s*\{{'
+    resource_match = re.search(resource_pattern, content)
+
+    if not resource_match:
+        print(f"  WARNING: Could not find resource block for {resource_type}.{resource_name}")
+        return None
+
+    search_start = resource_match.start()
+
+    next_resource = re.search(r'\nresource\s+"', content[resource_match.end():])
+    if next_resource:
+        search_end = resource_match.end() + next_resource.start()
+    else:
+        search_end = len(content)
+
+    resource_section = content[search_start:search_end]
+
+    type_pattern = r'instance_type\s*=\s*"[^"]*"'
+    type_match = re.search(type_pattern, resource_section)
+
+    if not type_match:
+        print(f"  WARNING: Could not find instance_type in {resource_type}.{resource_name}")
+        return None
+
+    indent_match = re.match(r'^(\s*)', resource_section[type_match.start():].split('\n')[0])
+    indent = indent_match.group(1) if indent_match else "  "
+
+    new_type_line = f'{indent}instance_type = "{new_instance_type}"'
+
+    abs_start = search_start + type_match.start()
+    abs_end = search_start + type_match.end()
+
+    updated_content = content[:abs_start] + new_type_line + content[abs_end:]
+    return updated_content
+
+
+
+def create_fix_pr(resource_address, field_name, before_value, after_value, classification="SAFE", reason="", suggestion=""):
     repo = get_repo()
 
     timestamp = int(datetime.now().timestamp())
@@ -84,6 +158,12 @@ def create_fix_pr(resource_address, field_name, before_value, after_value, class
     elif field_name in ("tags", "tags_all") and isinstance(before_value, dict):
         updated_content = fix_tags_in_tf(current_content, resource_type, resource_name, before_value)
         fix_type = "auto-fixed"
+    elif field_name == "description" and isinstance(before_value, str):
+        updated_content = fix_description_in_tf(current_content, resource_type, resource_name, before_value)
+        fix_type = "auto-fixed"
+    elif field_name == "instance_type" and isinstance(before_value, str):
+        updated_content = fix_instance_type_in_tf(current_content, resource_type, resource_name, before_value)
+        fix_type = "auto-fixed"
     else:
         updated_content = None
         fix_type = "flagged"
@@ -104,16 +184,22 @@ def create_fix_pr(resource_address, field_name, before_value, after_value, class
     else:
         status_line = "Status: Flagged -- manual edit needed. See before/after values below."
 
+    suggestion_block = ""
+    if suggestion:
+        suggestion_block = f"\n\n**Suggested fix:**\n\n{suggestion}"
+
     pr_body = (
         f"## TerraGuard Drift Detection\n\n"
         f"**Resource:** `{resource_address}`\n\n"
         f"**Field changed:** `{field_name}`\n\n"
         f"**Classification:** {classification}\n\n"
+        f"**Why:** {reason}\n\n"
         f"{status_line}\n\n"
         f"**Before (current AWS reality):**\n\n"
         f"```\n{before_value}\n```\n\n"
         f"**After (what code previously said):**\n\n"
-        f"```\n{after_value}\n```\n\n"
+        f"```\n{after_value}\n```"
+        f"{suggestion_block}\n\n"
         f"*Opened automatically by TerraGuard.*"
     )
 
