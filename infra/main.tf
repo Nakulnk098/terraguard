@@ -52,3 +52,4 @@ resource "aws_security_group" "demo_sg" {
     Project = "TerraGuard"
   }
 }
+# TODO(TerraGuard): RISKY drift on aws_s3_bucket.demo_bucket -- bucket changed -- see PR for details
