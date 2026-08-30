@@ -77,36 +77,41 @@ def classify_change(resource_type, field_name, before_value, after_value):
 
     if field_name in ("tags", "tags_all", "description"):
         return "SAFE", "Tags and descriptions are cosmetic changes", ""
-        # TEMPORARY TEST: skip ingress rule to test LLM fallback
-    
+
     if resource_type == "aws_instance" and field_name == "instance_type":
         return "SAFE", "Instance type is a performance setting, not security", ""
 
     if resource_type == "aws_security_group" and field_name == "ingress":
         before_rules = before_value or []
-        after_rules = after_value or []
-
         risky_ports = [22, 3389, 3306, 5432]
 
         for rule in before_rules:
             cidr_blocks = rule.get("cidr_blocks", [])
             from_port = rule.get("from_port")
             if "0.0.0.0/0" in cidr_blocks and from_port in risky_ports:
-                return "RISKY", f"Port {from_port} is open to the entire internet", ""
+                return "RISKY", f"Port {from_port} is open to the entire internet", f"Either restrict port {from_port} to a specific IP range in main.tf, or run terraform apply to close public access immediately."
 
         return "SAFE", "Network change but not on a sensitive port", ""
 
     if resource_type.startswith("aws_iam_"):
-        return "RISKY", "IAM changes always require human review", ""
+        return "RISKY", "IAM changes always require human review", "Review who made this change and why. If intentional, update IAM policy in main.tf. If unauthorized, run terraform apply to revert and investigate the source."
 
     if resource_type == "aws_s3_bucket_server_side_encryption_configuration":
-        return "RISKY", "Encryption settings affect data protection", ""
+        return "RISKY", "Encryption settings affect data protection", "Verify encryption is still enabled. If disabled, run terraform apply immediately to re-enable. If changed to a different algorithm, update main.tf if intentional."
 
     if resource_type == "aws_s3_bucket_public_access_block":
-        return "RISKY", "Public access changes can expose private data", ""
+        return "RISKY", "Public access changes can expose private data", "Check if the bucket is now publicly accessible. Run terraform apply to restore access restrictions immediately if this was unintended."
 
     if resource_type == "aws_s3_bucket_versioning" and field_name == "versioning_configuration":
         return "SAFE", "Versioning is a data retention setting", ""
+
+        # --- Rule: CloudWatch log retention ---
+    if resource_type == "aws_cloudwatch_log_group" and field_name == "retention_in_days":
+        return "SAFE", "Log retention is a storage setting, not security", ""
+
+    # --- Default: ask LLM for ambiguous cases ---
+    classification, reason, suggestion = llm_classify(resource_type, field_name, before_value, after_value)
+    return "RISKY", reason, suggestion
 
     # --- Default: ask LLM for ambiguous cases ---
     classification, reason, suggestion = llm_classify(resource_type, field_name, before_value, after_value)
