@@ -64,7 +64,7 @@ resource "aws_s3_bucket_public_access_block" "demo_bucket_public_access" {
 # Resource 4: CloudWatch Log Group (SAFE test)
 resource "aws_cloudwatch_log_group" "demo_logs" {
   name              = "/terraguard/demo-logs"
-  retention_in_days = 7
+  retention_in_days = 30
 
   tags = {
     Project = "TerraGuard"
