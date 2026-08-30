@@ -52,3 +52,4 @@ resource "aws_security_group" "demo_sg" {
     Project = "TerraGuard"
   }
 }
+# TODO(TerraGuard): sync 'retention_in_days' on aws_cloudwatch_log_group.demo_logs -- see PR
