@@ -94,3 +94,4 @@ resource "aws_instance" "demo_instance" {
     Name    = "terraguard-demo-instance"
   }
 }
+# TODO(TerraGuard): RISKY drift on aws_instance.demo_instance -- launch_template changed -- see PR for details
