@@ -303,7 +303,7 @@ The Mistral SDK had breaking import changes across versions. Direct `requests.po
 - [x] Add more AWS resources (CloudWatch, SSM Parameter, S3 public access block)
 - [x] Flag `policy` and `acl` field changes as RISKY instead of ignoring them (previously silently skipped — a bucket made public via ACL or policy produced no alert at all)
 - [ ] Expand auto-fix to more field types beyond tags/description/instance_type
-- [ ] Add a web dashboard for drift history visualization
+- [x] Add a web dashboard for drift history visualization (static page at `docs/index.html`, regenerated and committed by the workflow every run, served via GitHub Pages)
 - [ ] Slack slash command to query drift history (`/terraguard history`)
 - [ ] Multi-account AWS support
 
@@ -311,7 +311,7 @@ The Mistral SDK had breaking import changes across versions. Direct `requests.po
 
 ## Resume Bullet
 
-> Built TerraGuard, an automated Terraform drift-detection tool that scans AWS infrastructure every 6 hours via GitHub Actions, classifies changes by risk level using deterministic rules + Mistral AI LLM fallback, auto-opens GitHub PRs to fix safe drift, and sends real-time Slack alerts with fix suggestions for risky changes — with full audit trail in SQLite.
+> Built TerraGuard, an automated Terraform drift-detection tool that scans AWS infrastructure every 6 hours via GitHub Actions, classifies changes by risk level using deterministic rules + Mistral AI LLM fallback, auto-opens GitHub PRs to fix safe drift, and sends real-time Slack alerts with fix suggestions for risky changes — with a full audit trail in SQLite and a live dashboard published automatically via GitHub Pages.
 
 ---
 
