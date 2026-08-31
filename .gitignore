@@ -14,5 +14,3 @@ __pycache__/
 
 # Secrets
 .env
-
-drift_history.db

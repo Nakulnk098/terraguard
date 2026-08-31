@@ -22,8 +22,6 @@ IGNORE_FIELDS = {
     "request_payer",
     "acceleration_status",
     "bucket_prefix",
-    "policy",
-    "acl",
     "object_lock_enabled",
     "versioning_configuration",
 }
@@ -77,6 +75,9 @@ def classify_change(resource_type, field_name, before_value, after_value):
 
     if field_name in ("tags", "tags_all", "description"):
         return "SAFE", "Tags and descriptions are cosmetic changes", ""
+
+    if field_name in ("policy", "acl"):
+        return "RISKY", f"{field_name.upper()} changes can directly expose data or grant unintended access", f"Check whether this resource is now more permissive than intended. If unauthorized, run terraform apply to restore it from main.tf; if intentional, update main.tf to match."
 
     if resource_type == "aws_instance" and field_name == "instance_type":
         return "SAFE", "Instance type is a performance setting, not security", ""

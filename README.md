@@ -112,6 +112,9 @@ The core design decision: **anything that changes who can access what is always 
 | aws_s3_bucket_server_side_encryption_configuration | any field | RISKY | Slack alert + review PR |
 | aws_s3_bucket_public_access_block | any field | RISKY | Slack alert + review PR |
 | aws_s3_bucket_versioning | versioning_configuration | SAFE | Auto-fix PR |
+| aws_cloudwatch_log_group | retention_in_days | SAFE | Auto-fix PR |
+| Any resource | policy | RISKY | Slack alert + review PR |
+| Any resource | acl | RISKY | Slack alert + review PR |
 | Unknown resource type | any field | RISKY (LLM analyzes) | Slack alert + review PR with explanation |
 
 ---
@@ -297,7 +300,8 @@ The Mistral SDK had breaking import changes across versions. Direct `requests.po
 
 ## What's Next
 
-- [ ] Add more AWS resources (CloudWatch, SSM Parameter, S3 public access block)
+- [x] Add more AWS resources (CloudWatch, SSM Parameter, S3 public access block)
+- [x] Flag `policy` and `acl` field changes as RISKY instead of ignoring them (previously silently skipped — a bucket made public via ACL or policy produced no alert at all)
 - [ ] Expand auto-fix to more field types beyond tags/description/instance_type
 - [ ] Add a web dashboard for drift history visualization
 - [ ] Slack slash command to query drift history (`/terraguard history`)

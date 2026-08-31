@@ -2,6 +2,7 @@ from parser import load_plan, get_drifted_resources, get_changed_fields, classif
 from github_fixer import create_fix_pr
 from slack_alerter import send_risky_alert
 from drift_history import log_drift, print_history
+from dashboard import render_dashboard
 
 
 def run_terraguard(plan_path):
@@ -12,6 +13,7 @@ def run_terraguard(plan_path):
 
     if not drifted:
         print("No drift detected. Everything matches code.")
+        render_dashboard()
         return
 
     print(f"Found {len(drifted)} drifted resource(s)\n")
@@ -72,6 +74,7 @@ def run_terraguard(plan_path):
 
     # Show drift history after each run
     print_history()
+    render_dashboard()
 
 
 if __name__ == "__main__":

@@ -5,6 +5,9 @@ on:
     - cron: '0 */6 * * *'  # Runs every 6 hours
   workflow_dispatch: # Allows you to run it manually from GitHub too
 
+permissions:
+  contents: write  # needed to commit drift_history.db + docs/index.html back to the repo
+
 jobs:
   check-drift:
     runs-on: ubuntu-latest
@@ -56,3 +59,12 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
         run: python main.py
+
+      # Step 8: Persist drift history + publish the dashboard
+      - name: Commit drift history and dashboard
+        run: |
+          git config user.name "terraguard-bot"
+          git config user.email "actions@github.com"
+          git add classifier/drift_history.db docs/index.html
+          git diff --cached --quiet || git commit -m "TerraGuard: update drift history and dashboard"
+          git push
