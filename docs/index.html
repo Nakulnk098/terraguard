@@ -38,25 +38,25 @@
       <div style="font-size: 18px; font-weight: 600;">TerraGuard</div>
       <div style="font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 3px; padding: 2px 7px;">DRIFT HISTORY</div>
     </div>
-    <div style="font-size: 12px; color: var(--muted);">last updated 2026-09-03 10:54 UTC &middot; refreshes every 6h</div>
+    <div style="font-size: 12px; color: var(--muted);">last updated 2026-09-03 16:02 UTC &middot; refreshes every 6h</div>
   </div>
 
   <div class="stats">
     <div class="stat">
       <div class="stat-label">total events</div>
-      <div class="stat-value">109</div>
+      <div class="stat-value">117</div>
     </div>
     <div class="stat">
       <div class="stat-label">safe</div>
-      <div class="stat-value" style="color: var(--safe);">28</div>
+      <div class="stat-value" style="color: var(--safe);">30</div>
     </div>
     <div class="stat">
       <div class="stat-label">risky</div>
-      <div class="stat-value" style="color: var(--risky);">81</div>
+      <div class="stat-value" style="color: var(--risky);">87</div>
     </div>
     <div class="stat">
       <div class="stat-label">auto-fixed</div>
-      <div class="stat-value" style="color: var(--neutral);">28</div>
+      <div class="stat-value" style="color: var(--neutral);">30</div>
     </div>
   </div>
 
@@ -66,6 +66,70 @@
         <tr><th>time</th><th>resource</th><th>field</th><th>class</th><th>action</th><th>pr</th></tr>
       </thead>
       <tbody>
+        <tr>
+          <td style="color: #7d8790;">2026-09-03 16:02</td>
+          <td>aws_instance.demo_instance</td>
+          <td style="color: #b7bfc6;">instance_type</td>
+          <td><span style="background: rgba(74,222,154,0.12); color: #4ade9a; border-radius: 3px; padding: 2px 8px; font-size: 12px;">SAFE</span></td>
+          <td style="color: #b7bfc6;">auto-fixed</td>
+          <td><a href="https://github.com/Nakulnk098/terraguard/pull/225">view &rarr;</a></td>
+        </tr>
+        <tr>
+          <td style="color: #7d8790;">2026-09-03 16:02</td>
+          <td>aws_instance.demo_instance</td>
+          <td style="color: #b7bfc6;">ami</td>
+          <td><span style="background: rgba(239,122,95,0.14); color: #ef7a5f; border-radius: 3px; padding: 2px 8px; font-size: 12px;">RISKY</span></td>
+          <td style="color: #b7bfc6;">alerted</td>
+          <td><a href="https://github.com/Nakulnk098/terraguard/pull/224">view &rarr;</a></td>
+        </tr>
+        <tr>
+          <td style="color: #7d8790;">2026-09-03 16:02</td>
+          <td>aws_instance.demo_instance</td>
+          <td style="color: #b7bfc6;">credit_specification</td>
+          <td><span style="background: rgba(239,122,95,0.14); color: #ef7a5f; border-radius: 3px; padding: 2px 8px; font-size: 12px;">RISKY</span></td>
+          <td style="color: #b7bfc6;">alerted</td>
+          <td><a href="https://github.com/Nakulnk098/terraguard/pull/223">view &rarr;</a></td>
+        </tr>
+        <tr>
+          <td style="color: #7d8790;">2026-09-03 16:01</td>
+          <td>aws_instance.demo_instance</td>
+          <td style="color: #b7bfc6;">tags</td>
+          <td><span style="background: rgba(74,222,154,0.12); color: #4ade9a; border-radius: 3px; padding: 2px 8px; font-size: 12px;">SAFE</span></td>
+          <td style="color: #b7bfc6;">auto-fixed</td>
+          <td><a href="https://github.com/Nakulnk098/terraguard/pull/222">view &rarr;</a></td>
+        </tr>
+        <tr>
+          <td style="color: #7d8790;">2026-09-03 16:01</td>
+          <td>aws_instance.demo_instance</td>
+          <td style="color: #b7bfc6;">launch_template</td>
+          <td><span style="background: rgba(239,122,95,0.14); color: #ef7a5f; border-radius: 3px; padding: 2px 8px; font-size: 12px;">RISKY</span></td>
+          <td style="color: #b7bfc6;">alerted</td>
+          <td><a href="https://github.com/Nakulnk098/terraguard/pull/221">view &rarr;</a></td>
+        </tr>
+        <tr>
+          <td style="color: #7d8790;">2026-09-03 16:01</td>
+          <td>aws_instance.demo_instance</td>
+          <td style="color: #b7bfc6;">get_password_data</td>
+          <td><span style="background: rgba(239,122,95,0.14); color: #ef7a5f; border-radius: 3px; padding: 2px 8px; font-size: 12px;">RISKY</span></td>
+          <td style="color: #b7bfc6;">alerted</td>
+          <td><a href="https://github.com/Nakulnk098/terraguard/pull/220">view &rarr;</a></td>
+        </tr>
+        <tr>
+          <td style="color: #7d8790;">2026-09-03 16:01</td>
+          <td>aws_instance.demo_instance</td>
+          <td style="color: #b7bfc6;">source_dest_check</td>
+          <td><span style="background: rgba(239,122,95,0.14); color: #ef7a5f; border-radius: 3px; padding: 2px 8px; font-size: 12px;">RISKY</span></td>
+          <td style="color: #b7bfc6;">alerted</td>
+          <td><a href="https://github.com/Nakulnk098/terraguard/pull/219">view &rarr;</a></td>
+        </tr>
+        <tr>
+          <td style="color: #7d8790;">2026-09-03 16:01</td>
+          <td>aws_instance.demo_instance</td>
+          <td style="color: #b7bfc6;">user_data_replace_on_change</td>
+          <td><span style="background: rgba(239,122,95,0.14); color: #ef7a5f; border-radius: 3px; padding: 2px 8px; font-size: 12px;">RISKY</span></td>
+          <td style="color: #b7bfc6;">alerted</td>
+          <td><a href="https://github.com/Nakulnk098/terraguard/pull/218">view &rarr;</a></td>
+        </tr>
         <tr>
           <td style="color: #7d8790;">2026-09-03 10:54</td>
           <td>aws_instance.demo_instance</td>
@@ -401,70 +465,6 @@
           <td><span style="background: rgba(74,222,154,0.12); color: #4ade9a; border-radius: 3px; padding: 2px 8px; font-size: 12px;">SAFE</span></td>
           <td style="color: #b7bfc6;">auto-fixed</td>
           <td><a href="https://github.com/Nakulnk098/terraguard/pull/176">view &rarr;</a></td>
-        </tr>
-        <tr>
-          <td style="color: #7d8790;">2026-09-02 03:33</td>
-          <td>aws_instance.demo_instance</td>
-          <td style="color: #b7bfc6;">user_data_replace_on_change</td>
-          <td><span style="background: rgba(239,122,95,0.14); color: #ef7a5f; border-radius: 3px; padding: 2px 8px; font-size: 12px;">RISKY</span></td>
-          <td style="color: #b7bfc6;">alerted</td>
-          <td><a href="https://github.com/Nakulnk098/terraguard/pull/175">view &rarr;</a></td>
-        </tr>
-        <tr>
-          <td style="color: #7d8790;">2026-09-02 03:33</td>
-          <td>aws_instance.demo_instance</td>
-          <td style="color: #b7bfc6;">get_password_data</td>
-          <td><span style="background: rgba(239,122,95,0.14); color: #ef7a5f; border-radius: 3px; padding: 2px 8px; font-size: 12px;">RISKY</span></td>
-          <td style="color: #b7bfc6;">alerted</td>
-          <td><a href="https://github.com/Nakulnk098/terraguard/pull/174">view &rarr;</a></td>
-        </tr>
-        <tr>
-          <td style="color: #7d8790;">2026-09-02 03:33</td>
-          <td>aws_instance.demo_instance</td>
-          <td style="color: #b7bfc6;">launch_template</td>
-          <td><span style="background: rgba(239,122,95,0.14); color: #ef7a5f; border-radius: 3px; padding: 2px 8px; font-size: 12px;">RISKY</span></td>
-          <td style="color: #b7bfc6;">alerted</td>
-          <td><a href="https://github.com/Nakulnk098/terraguard/pull/173">view &rarr;</a></td>
-        </tr>
-        <tr>
-          <td style="color: #7d8790;">2026-09-02 03:33</td>
-          <td>aws_instance.demo_instance</td>
-          <td style="color: #b7bfc6;">credit_specification</td>
-          <td><span style="background: rgba(239,122,95,0.14); color: #ef7a5f; border-radius: 3px; padding: 2px 8px; font-size: 12px;">RISKY</span></td>
-          <td style="color: #b7bfc6;">alerted</td>
-          <td><a href="https://github.com/Nakulnk098/terraguard/pull/172">view &rarr;</a></td>
-        </tr>
-        <tr>
-          <td style="color: #7d8790;">2026-09-02 03:33</td>
-          <td>aws_instance.demo_instance</td>
-          <td style="color: #b7bfc6;">instance_type</td>
-          <td><span style="background: rgba(74,222,154,0.12); color: #4ade9a; border-radius: 3px; padding: 2px 8px; font-size: 12px;">SAFE</span></td>
-          <td style="color: #b7bfc6;">auto-fixed</td>
-          <td><a href="https://github.com/Nakulnk098/terraguard/pull/171">view &rarr;</a></td>
-        </tr>
-        <tr>
-          <td style="color: #7d8790;">2026-09-02 03:33</td>
-          <td>aws_instance.demo_instance</td>
-          <td style="color: #b7bfc6;">source_dest_check</td>
-          <td><span style="background: rgba(239,122,95,0.14); color: #ef7a5f; border-radius: 3px; padding: 2px 8px; font-size: 12px;">RISKY</span></td>
-          <td style="color: #b7bfc6;">alerted</td>
-          <td><a href="https://github.com/Nakulnk098/terraguard/pull/170">view &rarr;</a></td>
-        </tr>
-        <tr>
-          <td style="color: #7d8790;">2026-09-01 20:45</td>
-          <td>aws_instance.demo_instance</td>
-          <td style="color: #b7bfc6;">ami</td>
-          <td><span style="background: rgba(239,122,95,0.14); color: #ef7a5f; border-radius: 3px; padding: 2px 8px; font-size: 12px;">RISKY</span></td>
-          <td style="color: #b7bfc6;">alerted</td>
-          <td><a href="https://github.com/Nakulnk098/terraguard/pull/169">view &rarr;</a></td>
-        </tr>
-        <tr>
-          <td style="color: #7d8790;">2026-09-01 20:45</td>
-          <td>aws_instance.demo_instance</td>
-          <td style="color: #b7bfc6;">source_dest_check</td>
-          <td><span style="background: rgba(239,122,95,0.14); color: #ef7a5f; border-radius: 3px; padding: 2px 8px; font-size: 12px;">RISKY</span></td>
-          <td style="color: #b7bfc6;">alerted</td>
-          <td><a href="https://github.com/Nakulnk098/terraguard/pull/168">view &rarr;</a></td>
         </tr>
       </tbody>
     </table>
