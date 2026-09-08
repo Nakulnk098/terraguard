@@ -94,3 +94,4 @@ resource "aws_instance" "demo_instance" {
     Name    = "terraguard-demo-instance"
   }
 }
+# TODO(TerraGuard): sync 'tags' on aws_instance.demo_instance -- see PR
